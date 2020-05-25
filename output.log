@@ -1,0 +1,67 @@
+student  43823912
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:    4.5.0                                                                              │
+  │ Browser:    Electron 80 (headless)                                                             │
+  │ Specs:      1 found (model.spec.js)                                                            │
+  │ Searched:   cypress/integration/model.spec.js                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  model.spec.js                                                                   (1 of 1)
+
+Oops...we found an error preparing this test file:
+
+  /Users/Steve/projects/teaching/comp2110-2020-cs-solution/cypress/integration/model.spec.js
+
+The error was:
+
+SyntaxError: /Users/Steve/projects/teaching/comp2110-2020-cs-solution/static/js/model.js: Identifier 'newObservation' has already been declared (79:30)
+
+  77 |     // when the request is resolved, creates an "observationAdded" event
+  78 |     //  with the response from the server as the detail
+> 79 |     add_observation: function(newObservation) {
+     |                               ^
+  80 |         
+  81 |         // step 1. get a simple version working with hard coded data and send to the end point
+  82 |         // step 2. make it generic by taking in the new observation object above while parsing file: /Users/Steve/projects/teaching/comp2110-2020-cs-solution/static/js/model.js
+
+This occurred while Cypress was compiling and bundling your test code. This is usually caused by:
+
+- A missing file or dependency
+- A syntax error in the file or one of its dependencies
+
+Fix the error in your code and re-run your tests.
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        0                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     0 seconds                                                                        │
+  │ Spec Ran:     model.spec.js                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✖  model.spec.js                              0ms        -        -        1        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✖  1 of 1 failed (100%)                       0ms        -        -        1        -        -  
+

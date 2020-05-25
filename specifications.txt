@@ -1,0 +1,132 @@
+Web Application Development
+The goal in this major assignment is for you to develop a web application to support Citizen Science observations of trees.   This is a simplified application of course but aims to have the main components of a modern web application to show that you have mastered the concepts involved in building these applications.
+
+1 May Update: I have updated these requirements just to clarify what happens after submitting the form to add a new observation.  I've also made some changes to the starter kit:
+Added more test data, there are now 30 users and 300 observations, user ids are no longer sequential.  Note that in final testing I will again change the sample data so don't hard-wire anything into your code.
+Provided tests for form submission adding new observations
+Fixed up a few other tests that didn't match these requirements.  Note that we don't test the ordering of users on the users page - that test may be added if I can figure out how but it would be in addition to these tests.
+Fixed some issues in the python server, for example it will now reject form submissions with blank fields
+You can re-download the starter kit (same link as below) or look at the Github repository, however to make it easier for you to update your project this ZIP file has only the changed files. Unpack it into your project and overwrite the existing files.
+
+Update: 6pm - bug in main.py fixed, zip file updated.
+Update: 8pm - revert event names in tests to match comments in model.js (again)
+Update: 2/5 1pm - fix test in forms.spec.js to work for either hidden or text field for participant
+Update: 4/5 12am - fix test in pages.spec.js for recent observations to match new dataset
+Update: 7/5 12am - fix test name which still mentioned modelChanged instead of modelUpdated
+
+
+The notice is gone. No further changes.
+
+Application Outline
+Our clients run a Citizen Science service which collects data from the general public to feed in to large scale science projects.   Our job is to build a web application to support collecting data about trees.  The scientists have given us a set of attributes they want to collect for each tree observation. Our job is to build the website to support this and incorporate some features to motivate users to take part - leaderboards and personal profiles.
+
+The back-end team is hard at work putting the server side code together. This code, they tell us, will provide an API that delivers JSON data and accepts form submissions to update the data collection.  Our job in the front-end team is to make use of this API to build the web application.
+
+There will be six views in the application, these are outlined here. Each page has a specific URL hash as shown here:
+Main Page (/): contains some summary information, list of recent observations, current top 10 leaderboard of users and a link to the form to add an observation.  The user and observation entries link to their individual views (user profile view and observation detail view).
+Observation Form (/#!/submit): a view containing the form to submit an observation. The user will fill out the form and submit it. If the form is incomplete, a list of errors will be shown above the form and the user will be able to fix them and resubmit.  If the submission is successful, the user is shown the User Profile View where the new observation will be included in the observation list.
+User Profile View (/#!/users/<id>): shows the brief details of the user (name, avatar) and a complete list of the observations they have made, most recent first, each observation links to the Observation Detail view
+Observation Detail View (/#!/observations/<id>): shows the full details of one observation including all fields
+Observation List View (/#!/observations): shows the complete list of observations, each observation includes at least the location and weather fields and links to the Observation Detail view
+Leaderboard View (/#!/users): lists the full list of users in order of the number of observations that they have made. Each entry links to the profile view for that user.
+This will be a single page HTML application which means that only one HTML page will be loaded from the server. It will contain Javascript code that will construct the different views as required based on user interaction. The URL hash is appended to the URL to indicate the requested view, e.g. http://localhost:8010/#!/observations. 
+
+At this point in the project, the back-end team has not dealt with authentication yet, so we just assume that one user (Bob Bobalooba) is logged in.
+
+The JSON API
+The JSON API is provided by a Python web application. You can run the application from the starter kit with the command:
+
+python main.py
+It will serve pages on the URL http://localhost:8010/. 
+
+The server provides endpoints for users and for observations. A user record looks like this:
+
+{
+    "id": 0,
+    "first_name": "Bob",
+    "last_name": "Bobalooba",
+    "email": "bob@here.com",
+    "avatar": "http://robohash.org/Bob_Bobalooba"
+}
+An observation record looks like this:
+{
+    "id": 0,
+    "participant": 6,
+    "timestamp": "2020-04-05T01:11:52.659941",
+    "temperature": 13,
+    "weather": "sunny",
+    "wind": "strong",
+    "location": "Marsfield",
+    "height": 24,
+    "girth": 2.85,
+    "leaf_size": "large",
+    "leaf_shape": "divided",
+    "bark_colour": "red",
+    "bark_texture": "crinkles"
+}
+Adding Observations
+An important part of the application is the form to add a new observation.  When submitting an observation to the URL /api/observations via a POST request, all of the fields in the observation record are required except for the id and timestamp fields.  These are added by the server and returned in the added record.
+
+The other fields in the form are as follows:
+participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
+temperature - a numerical field
+weather - a select field with options for "fine", "raining", "sunny", "stormy"
+wind - a select field with options for "none", "light", "medium", "strong"
+location - a text input
+height - a floating point number
+girth - a floating point number
+leaf_size - a select field with options for "small", "medium", "large"
+leaf_shape - a select field with options for "rounded", "pointy", "divided"
+bark_colour - a select field with options for "grey", "red", "silver", "brown"
+bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty"
+The response from the server to a POST request is either a success or failure. On success you will get a response like:
+
+{
+  "status": "success",
+  "observation": ...complete observation record...
+}
+
+The complete observation will include the timestamp and id of the observation.
+
+In this case you should update the page to show the User Detail View where the new observation should be included in the observation list for that user (NOTE CHANGED).
+
+If the request failed (due to missing fields for example) the response looks like:
+
+{
+  "status": "failed",
+  "errors": ["Missing required field: participant", "Missing required field: temperature"]
+}
+
+In this case you should update the page to show the list of error messages on the same page as the form so that the user can correct these errors.
+
+Testing
+There will be automated tests for the application. These will be in two parts: unit tests and functional tests. All tests will be run with the Cypress testing system (this runs tests on your application in a browser and will be introduced over the next week). 
+
+Unit tests check that your Javascript code does what it should.  We will provide unit tests for the functions that access the API and supply the interface for the data to the rest of the application (the Model).
+
+Functional tests check the actual web pages that your code generates.  These tests simulate clicks on links in the page and submission of forms, then check for the correct response in the updated page. 
+
+Marks will be given for passing the tests that are supplied.
+
+Starter Kit
+The starter kit is available in this Github repository.  You can clone the repository or download the project as a zip file.
+
+The starter kit contains the Python server and the core files for the Javascript part of the application.  You must retain the file structure of this project to enable us to run automated testing on your application.
+
+Grading
+This assignment is worth 35% of the total mark for this unit. It will be graded in three parts - automated tests, code review and design/completeness.
+
+Automated Tests (15%) your code passes all automated tests provided to you and run with the Cypress testing system.
+
+Code Review (10%) Your project code is well organised and clear, makes use of appropriate methods to build the application and would be a good platform for future development of the project. Comments are used to describe functions and classes. Code is split into modules as appropriate. Inter-module dependencies are minimised. Your project includes a README.md file that describes the project structure and would be suitable to be passed to a new developer for maintenance.
+
+Design and Completeness (10%) Your application works as it should and provides the different views in a usable manner. The page layout is clear and functional, you have followed usability principles in designing your site.
+
+Submit
+Submission will be in two stages.  First, you will submit just your implementation of model.js containing code to retrieve data from the API and methods to make data available to the application.   These are due in Week 9 on 10th May. This is intended as a progress submission to ensure that you are on-track with the project and have made some progress.  If your implementation passes all tests on the model, you will score 5 marks. 
+
+The final submission is extended until Week 12 on May 31st.  You will submit a zip file containing your project following the same structure as the starter kit you were given.  File names that are referenced in tests will not be changed.
+
+Your implementation of model.js will be tested again along with running all of the other automated tests. If you submitted in the first round, you will be able to improve your score (even if you scored zero first time around).  If you did not submit in the first round, you will not be able to get these marks. 
+
+Note: submit the final assignment here. See the separate submission point for model.js in Week 9.

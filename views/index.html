@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Citizen Science</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+
+  <!-- Include Handlebars from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <!-- I have included a lightweight route-recognizer to help render the correct html view-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/route-recognizer/0.3.4/route-recognizer.js"></script>
+  <script src="/static/js/main.js" type="module"></script>
+  <script src="/static/js/model.js" type="module"></script>
+  <script src="/static/js/views.js" type="module"></script>
+  </script>
+
+</head>
+
+<body>
+
+  <header>
+    <div id="logo"></div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#!/users">Users</a></li>
+        <li><a href="#!/observations">Observations</a></li>
+        <li><a href="#!/submit">Submit an observation</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="content">
+    <div id="heading">
+      <hgroup>
+        <h1>Citizen Science</h1>
+        <h2>Understanding Our Trees</h2>
+      </hgroup>
+      <div id="messages"></div>
+      <div id="target"></div>
+    </div>
+  </div>
+  <footer>
+    <div id="social">
+      <ul>
+        <li id="social-twitter"><a href="#">Twitter</a></li>
+        <li id="social-facebook"><a href="#">Facebook</a></li>
+        <li id="social-instagram"><a href="#">Instagram</a></li>
+      </ul>
+    </div>
+
+    <ul class="footer-tos">
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Cookies</a></li>
+    </ul>
+
+    <p id="copyright">All content and images subject to copyright &copy; COMP2110 Citizen Science 2020.</p>
+
+
+  <!-- Templates -->
+  <script id="users-list-template" type="text/x-handlebars-template">
+    <h2>List of Users</h2>
+    
+    <ul>
+      {{#each users}}
+        
+      <li class=user data-id={{id}}>{{first_name}} {{last_name}} {{avatar}}</li>
+      
+      {{/each}}
+    </ul>  
+  </script>
+
+  <script id="user-detail-template" type="text/x-handlebars-template">
+    <h2>User Details</h2>
+
+    <ul>
+      <li>{{id}}</li>
+      <li>{{first_name}}</li>
+      <li>{{last_name}}</li>
+      <li>{{email}}</li>
+      <li>{{avatar}}</li>
+    </ul>
+  </script>
+
+  <script id="submit-form-errors-template" type="text/x-handlebars-template">
+    <h2>Errors</h2>
+    <ul>
+      {{#each errors}}
+      <li >{{message}} </li>
+      {{/each}}
+    </ul>  
+  </script>
+
+
+  <script id="observation-detail-template" type="text/x-handlebars-template">
+    <h2>Observation Details</h2>
+
+    <ul>
+      <li>{{id}}</li>
+      <li>{{first_name}}</li>
+      <li>{{last_name}}</li>
+      <li>{{email}}</li>
+      <li>{{avatar}}</li>
+    </ul>
+  </script>
+
+  <script id="observation-submit-template" type="text/x-handlebars-template">
+    <h2>Observation Submit</h2>
+    <form onsubmit="handle_submit_form()" id="submit_form"> <!--currently not working, is called in the test-->
+
+<!--       
+The other fields in the form are as follows:
+participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
+temperature - a numerical field
+weather - a select field with options for "fine", "raining", "sunny", "stormy"
+wind - a select field with options for "none", "light", "medium", "strong"
+location - a text input
+height - a floating point number
+girth - a floating point number
+leaf_size - a select field with options for "small", "medium", "large"
+leaf_shape - a select field with options for "rounded", "pointy", "divided"
+bark_colour - a select field with options for "grey", "red", "silver", "brown"
+bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty"
+The response from the server to a POST request is either a success or failure. On success you will get a response like: -->
+        
+        <div><input type="hidden" name="participant" value="0"/></div>
+        <div><input type="number" name="temperature"/></div>
+        <div><input type="text" name="height"/></div>
+        <div><input type="text" name="girth"/></div>
+        <div><input type="text" name="location"/></div>
+        
+        <div>
+        <select name="weather">
+          <option>
+            fine
+          </option>
+          <option>
+            raining
+          </option>
+          <option>
+            sunny
+          </option>
+          <option>
+            stormy
+          </option>
+        </select>
+      </div>
+      <div>
+        <select name="wind">
+          <option>
+            none
+          </option>
+          <option>
+            light
+          </option>
+          <option>
+            medium
+          </option>
+          <option>
+            strong
+          </option>
+        </select></div>
+        <div><select name="leaf_size">
+          <option>small</option>
+          <option>medium</option>
+          <option>large</option>
+        </select></div>
+        <div><select name="leaf_shape">
+          <option>rounded</option>
+          <option>pointy</option>
+          <option>divided</option>
+        </select></div>
+        <div><select name="bark_colour">
+          <option>grey</option>
+          <option>red</option>
+          <option>silver</option>
+          <option>brown</option>
+        </select></div>
+        <div><select name="bark_texture">
+          <option>smooth</option>
+          <option>peeling</option>
+          <option>crinkles</option>
+          <option>furry</option>
+          <option>spotty</option>
+        </select></div>
+
+
+  <button type="submit" form="submit_form" value="Submit">Submit</button>
+
+  </script>
+
+
+</body>
+
+</html>
