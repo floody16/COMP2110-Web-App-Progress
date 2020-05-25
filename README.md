@@ -42,4 +42,6 @@ The Python API server provides the following URLs serving JSON data:
 * `/api/observations/<id>` - GET returns details of an individual observation
 * `/api/reset` - GET request resets the database (for testing purposes)
 
+
+
 ##  

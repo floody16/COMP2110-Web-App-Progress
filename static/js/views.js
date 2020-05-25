@@ -1,7 +1,8 @@
 export {Views};
 
-const Views = {
+const target = "target";
 
+const Views = {
     //
 
     apply_template: function (targetid, templateid, data) {
@@ -31,31 +32,31 @@ const Views = {
 
     // render the html (views) so that you see the appropiate page
 
-    submit_view: function (targetid) {
-        this.apply_template(targetid, "observation-submit-template");
+    submit_view: function (data) {
+        this.apply_template(target, "observation-submit-template", data);
     },
 
-    submit_form_errors_view: function (targetid, errors) {
-        this.apply_template(targetid, "submit-form-errors-template", errors);
+    submit_form_errors_view: function (errors) {
+        this.apply_template("messages", "submit-form-errors-template", errors);
     },
 
-    list_users_view: function (targetid, users) {
-        this.apply_template(targetid, "users-list-template", { 'Users': users });
+    list_users_view: function (users) {
+        this.apply_template(target, "users-list-template", { 'Users': users });
     },
 
-    user_view: function (targetid, user) {
-        this.apply_template(targetid, "user-detail-template", user);
+    user_view: function (user) {
+        this.apply_template(target, "user-detail-template", user);
     },
 
-    list_observations_view: function (targetid, observations) {
-        this.apply_template(targetid, "observations-list-template", { 'Observations': observations });
+    list_observations_view: function (observations) {
+        this.apply_template(target, "observations-list-template", { 'Observations': observations });
     },
 
-    observation_view: function (targetid, observation) {
-        this.apply_template("target", "observation-detail-template", observation);
+    observation_view: function (observation) {
+        this.apply_template(target, "observation-detail-template", observation);
     },
 
-    leaderboard_view: function (targetid, user, observation) {
-        this.apply_template(targetid, "leaderboard-template", user, observation);
+    leaderboard_view: function (user, observation) {
+        this.apply_template(target, "leaderboard-template", user, observation);
     },
 }

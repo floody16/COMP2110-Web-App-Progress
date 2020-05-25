@@ -77,19 +77,61 @@
     <h2>User Details</h2>
 
     <ul>
-      <li>{{id}}</li>
-      <li>{{first_name}}</li>
-      <li>{{last_name}}</li>
-      <li>{{email}}</li>
-      <li>{{avatar}}</li>
+      <li>{{user.id}}</li>
+      <li>{{user.first_name}}</li>
+      <li>{{user.last_name}}</li>
+      <li>{{user.email}}</li>
+      <li>{{user.avatar}}</li>
     </ul>
+    <!-- participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
+    temperature - a numerical field
+    weather - a select field with options for "fine", "raining", "sunny", "stormy"
+    wind - a select field with options for "none", "light", "medium", "strong"
+    location - a text input
+    height - a floating point number
+    girth - a floating point number
+    leaf_size - a select field with options for "small", "medium", "large"
+    leaf_shape - a select field with options for "rounded", "pointy", "divided"
+    bark_colour - a select field with options for "grey", "red", "silver", "brown"
+    bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty" -->
+    <table>
+      <tr>
+        <th>temperature</th>
+        <th>weather</th>
+        <th>wind</th>
+        <th>location</th>
+        <th>height</th>
+        <th>leaf_size</th>
+        <th>leaf_shape</th>
+        <th>bark_colour</th>
+        <th>bark_texture</th>
+        <th>view</th>
+      </tr>
+
+      {{#each observations}}
+      <tr>
+        <td>{{temperature}}</td>
+        <td>{{weather}}</td>
+        <td>{{wind}}</td>
+        <td>{{location}}</td>
+        <td>{{height}}</td>
+        <td>{{leaf_size}}</td>
+        <td>{{leaf_shape}}</td>
+        <td>{{bark_colour}}</td>
+        <td>{{bark_texture}}</td>
+        <td><a href='/#!/observations/{{observation.id}}'>View</a> </td>
+      </tr>
+      {{/each}}
+
+    </table>
+
   </script>
 
   <script id="submit-form-errors-template" type="text/x-handlebars-template">
     <h2>Errors</h2>
     <ul>
       {{#each errors}}
-      <li >{{message}} </li>
+      <li >{{ this }} </li>
       {{/each}}
     </ul>  
   </script>
@@ -109,7 +151,7 @@
 
   <script id="observation-submit-template" type="text/x-handlebars-template">
     <h2>Observation Submit</h2>
-    <form onsubmit="handle_submit_form()" id="submit_form"> <!--currently not working, is called in the test-->
+    <form onsubmit="Controller.handle_submit_form(); return false;" id="submit_form"> <!--currently not working, is called in the test-->
 
 <!--       
 The other fields in the form are as follows:
@@ -126,7 +168,7 @@ bark_colour - a select field with options for "grey", "red", "silver", "brown"
 bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty"
 The response from the server to a POST request is either a success or failure. On success you will get a response like: -->
         
-        <div><input type="hidden" name="participant" value="0"/></div>
+        <div><input type="hidden" name="participant" value="{{participant}}"/></div>
         <div><input type="number" name="temperature"/></div>
         <div><input type="text" name="height"/></div>
         <div><input type="text" name="girth"/></div>

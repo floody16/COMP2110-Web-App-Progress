@@ -1,14 +1,20 @@
 import {Controller} from './controller.js';
 import {Model} from './model.js';
 
+window.Controller = Controller;
+
 const router = new RouteRecognizer();
 
 router.add([
-    { path: "/", handler: Controller.main_handler }
+    { path: "/", handler: Controller.main_handler.bind(Controller) }
 ]);
 
 router.add([
-    { path: "/submit", handler: Controller.submit_view_handler }
+    { path: "/submit", handler: Controller.submit_view_handler.bind(Controller) }
+]);
+
+router.add([
+    { path: "/users/:id", handler: Controller.user_view_handler.bind(Controller) }
 ]);
 
 window.addEventListener('hashchange', function(){
@@ -56,20 +62,6 @@ function route () {
 
 }
 
-export function handle_submit_form() {
-    let form = document.getElementById("submit_form");
-    Model.add_observation(form)
-    .then(result => {
-        console.log('result:', result);
-
-        if (result.status === "success") {
-            location.hash = "#!/observations"
-        }
-
-        Views.submit_form_errors_view(targetid, result.errors);
-    });
-    return;
-}
 
 window.onload = route;
 window.onhashchange = route;
