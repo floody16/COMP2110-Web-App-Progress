@@ -111,7 +111,7 @@ const Model = {
     },
 
     // get_user_observations - return just the observations for
-    //   one user as an array
+    // one user as an array
     get_user_observations: function(userId) {
         // confirm what user observations are this would need to combine the data of both users and observations
         let observations = this.get_observations();

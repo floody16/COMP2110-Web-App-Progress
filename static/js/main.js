@@ -17,6 +17,19 @@ router.add([
     { path: "/users/:id", handler: Controller.user_view_handler.bind(Controller) }
 ]);
 
+router.add([
+    { path: "/observations/:id", handler: Controller.observation_view_handler.bind(Controller) }
+]);
+
+router.add([
+    { path: "/observations", handler: Controller.observations_view_handler.bind(Controller) }
+]);
+
+router.add([
+    { path: "/users", handler: Controller.users_view_handler.bind(Controller) }
+]);
+
+
 window.addEventListener('hashchange', function(){
     console.log('The hash has changed');
 });
