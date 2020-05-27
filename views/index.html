@@ -9,7 +9,7 @@
 
   <!-- Include Handlebars from a CDN -->
   <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-  <!-- I have included a lightweight route-recognizer to help render the correct html view-->
+  <!-- I have included a lightweight route-recognizer to help render the correct view-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/route-recognizer/0.3.4/route-recognizer.js"></script>
   <script src="/static/js/main.js" type="module"></script>
   <script src="/static/js/model.js" type="module"></script>
@@ -65,24 +65,16 @@
     <h2>List of Users</h2>
     
     <ul>
-      {{#each users}}
+      
         
       <li class=user data-id={{id}}>{{first_name}} {{last_name}} {{avatar}}</li>
       
-      {{/each}}
+      
     </ul>  
   </script>
 
-  <script id="user-detail-template" type="text/x-handlebars-template">
-    <h2>User Details</h2>
-
-    <ul>
-      <li>{{user.id}}</li>
-      <li>{{user.first_name}}</li>
-      <li>{{user.last_name}}</li>
-      <li>{{user.email}}</li>
-      <li>{{user.avatar}}</li>
-    </ul>
+  <script id="observation-detail-template" type="text/x-handlebars-template">
+    
     <!-- participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
     temperature - a numerical field
     weather - a select field with options for "fine", "raining", "sunny", "stormy"
@@ -94,18 +86,20 @@
     leaf_shape - a select field with options for "rounded", "pointy", "divided"
     bark_colour - a select field with options for "grey", "red", "silver", "brown"
     bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty" -->
+    
+    <h2>List of Observations</h2>
     <table>
       <tr>
-        <th>temperature</th>
-        <th>weather</th>
-        <th>wind</th>
-        <th>location</th>
-        <th>height</th>
-        <th>leaf_size</th>
-        <th>leaf_shape</th>
-        <th>bark_colour</th>
-        <th>bark_texture</th>
-        <th>view</th>
+        <th>Temperature</th>
+        <th>Weather</th>
+        <th>Wind</th>
+        <th>Location</th>
+        <th>Height</th>
+        <th>Leaf Size</th>
+        <th>Leaf Shape</th>
+        <th>Bark Colour</th>
+        <th>Bark Texture</th>
+        <th>View</th>
       </tr>
 
       {{#each observations}}
@@ -119,10 +113,34 @@
         <td>{{leaf_shape}}</td>
         <td>{{bark_colour}}</td>
         <td>{{bark_texture}}</td>
-        <td><a href='/#!/observations/{{observation.id}}'>View</a> </td>
+        <td><a href='/#!/observations/{{observation.id}}'>Observation Details</a></td>
       </tr>
       {{/each}}
 
+    </table>
+
+  </script>
+
+  <script id="user-detail-template" type="text/x-handlebars-template">
+
+    <h2>User Details</h2>
+    <table>
+      <tr>
+       <th>User ID</th>
+       <th>First Name</th>
+       <th>Last Name</th>
+       <th>Avatar</th>
+      </tr>
+
+      {{#each users}
+      <tr>
+        <td>{{user.id}}</td>
+        <td>{{user.first_name}}</td>
+        <td>{{user.last_name}}</td>
+        <td>{{user.avatar}}</td>
+        <td><a href="/#!/observations/{{observation.id}}"></a>User Details</td>
+      </tr>
+      {{/each}}
     </table>
 
   </script>
@@ -234,7 +252,5 @@ The response from the server to a POST request is either a success or failure. O
 
   </script>
 
-
 </body>
-
 </html>

@@ -1,12 +1,10 @@
-import { Model } from "./model";
-
 export {Views};
 
 const target = "target";
 
+// renders the views for the Controller, to then be routed in main
 const Views = {
     //
-
     apply_template: function (targetid, templateid, data) {
 
         console.log(data);
@@ -18,11 +16,9 @@ const Views = {
         if (!element) {
             return;
         }
-
         let template = Handlebars.compile(
             element.textContent
         )
-
         let target = document.getElementById("target");
         console.log('our target: ', target);
         if (!target) {
@@ -36,36 +32,29 @@ const Views = {
 
     submit_view: function (data) {
         this.apply_template(target, "observation-submit-template", data);
-        //Model.update_observations();
     },
 
     submit_form_errors_view: function (errors) {
         this.apply_template("messages", "submit-form-errors-template", errors);
-        //Model.update_observations();
     },
 
     list_users_view: function (users) {
         this.apply_template(target, "users-list-template", { 'Users': users });
-        //Model.update_observations();
     },
 
     user_view: function (user) {
         this.apply_template(target, "user-detail-template", user);
-        //Model.update_observations();
     },
 
     list_observations_view: function (observations) {
         this.apply_template(target, "observations-list-template", { 'Observations': observations });
-        //Model.update_observations();
     },
 
     observation_view: function (observation) {
         this.apply_template(target, "observation-detail-template", observation);
-        //Model.update_observations();
     },
 
     leaderboard_view: function (user, observation) {
         this.apply_template(target, "leaderboard-template", user, observation);
-        Model.update_observations();
     },
 }

@@ -8,7 +8,9 @@ export {Model};
  *   "modelChanged" event when new data has been retrieved from the API
  *   "observationAdded" event when a request to add a new observation returns
 */
-    
+
+// contains the functions to manipulate the data
+// these functions are called by views, main & controller
 const Model = {
 
     observations_url: '/api/observations', 
@@ -36,7 +38,6 @@ const Model = {
             window.dispatchEvent(event);
             return event;
         });
-        
     },
 
     // update_observations - retrieve the latest list of observations
@@ -56,7 +57,6 @@ const Model = {
             window.dispatchEvent(event);
             return event;
         });
-        
     },
 
     // get_observations - return an array of observation objects
@@ -64,7 +64,6 @@ const Model = {
         return this.data.observations;
     },
 
-    
     // get_observation - return a single observation given its id
     get_observation: function(observationid) {
         for (const observation of this.data.observations) {
@@ -85,11 +84,6 @@ const Model = {
     //  with the response from the server as the detail
     add_observation: function(formdata) {
         const data = new URLSearchParams(formdata);
-
-        // get a simple version working with hard coded data and send to the end point
-        // make it generic by taking in the new observation object above
-
-        // let newObservation = new FormData;
         return fetch(this.observations_url, {
             method: 'POST',
             body: data
@@ -100,10 +94,8 @@ const Model = {
                 detail: result
             });
             window.dispatchEvent(event);
-
             return result;
-        })
-        
+        })      
         .catch((error) => {
             console.log(error);
             throw error;
@@ -112,35 +104,23 @@ const Model = {
 
     // get_user_observations - return just the observations for
     // one user as an array
+    // this would need to combine the data of both users and observations
     get_user_observations: function(userId) {
-        // confirm what user observations are this would need to combine the data of both users and observations
         let observations = this.get_observations();
         console.log(observations);
-       // if (observations.length === 0){
-         //   return [];
-       // }
-        
-        var userObservations = observations.filter(function(o) { return o.participant === userId; } );
-        // for(const observation of observations) {
-            // if (userObservations[i].userid == userid) {
-        
+
+        var userObservations = observations.filter(function(o) { return o.participant === userId; } );     
         return this.sort_by_timestamp(userObservations);
-            
-            //}
-        //}
-            
     },  
 
     // get_recent_observations - return the N most recent
     //  observations, ordered by timestamp, most recent first
     // call sort_by_timestamp and pass observations as a parameter
     // return a sorted copy of observations 
-    get_recent_observations: function(N) {
-        
+    get_recent_observations: function(N) {   
         console.log("get_recent_observations is called");
+        console.log(this.data.observations); 
 
-        console.log(this.data.observations);
-        
         let sortedObservations = this.sort_by_timestamp(this.data.observations);
         return sortedObservations.slice(0, N);
     },
@@ -149,7 +129,6 @@ const Model = {
     // the copied array in descending order of most recent timestamp first
     // this is then called in get_recent_observations
     sort_by_timestamp: function(observations){
-
         var copy = observations.slice();
         
         copy.sort(function(a, b){   
@@ -164,9 +143,6 @@ const Model = {
         return copy;
     },
 
-    /* 
-    * Users
-    */
     // get_users - return the array of users
     get_users: function() {
         return this.data.users;

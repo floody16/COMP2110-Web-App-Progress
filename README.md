@@ -1,4 +1,5 @@
 # COMP2110/6110 Starter Kit - Citizen Science Web Application
+# James Flood - Student Number: 43823912
 
 This is the starter kit for the 2020 Web Application assignment. It contains a 
 Python based web server that provides a JSON API to the data required for
@@ -41,6 +42,8 @@ The Python API server provides the following URLs serving JSON data:
 * `/api/observations` - POST adds a new observation record (required fields below)
 * `/api/observations/<id>` - GET returns details of an individual observation
 * `/api/reset` - GET request resets the database (for testing purposes)
+
+## Extra Features I've Added
 
 
 
