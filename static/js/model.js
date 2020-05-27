@@ -114,7 +114,7 @@ const Model = {
     },  
 
     // get_recent_observations - return the N most recent
-    //  observations, ordered by timestamp, most recent first
+    // observations, ordered by timestamp, most recent first
     // call sort_by_timestamp and pass observations as a parameter
     // return a sorted copy of observations 
     get_recent_observations: function(N) {   
@@ -129,8 +129,7 @@ const Model = {
     // the copied array in descending order of most recent timestamp first
     // this is then called in get_recent_observations
     sort_by_timestamp: function(observations){
-        var copy = observations.slice();
-        
+        var copy = observations.slice();     
         copy.sort(function(a, b){   
             if (a.timestamp > b.timestamp){
                 return -1;
@@ -154,7 +153,7 @@ const Model = {
     },
 
     // get_user - return the details of a single user given 
-    //    the user id
+    // the user id
     get_user: function(userid) {
         for (const user of this.data.users) {
             if (user.id == userid) {
@@ -162,5 +161,30 @@ const Model = {
             }           
         }
         return null;
+    },
+
+    get_leaderboard: function(N) {
+        const userMap = this.get_users()
+        .reduce(function(userMap,user){
+            userMap[user.id]=user;
+            return userMap;
+        },{});
+        
+        let topLeaders = this.get_observations()
+            .reduce(function(leaderboard, observation){
+                leaderboard[observation.participant] = 1 + (leaderboard[observation.participant] || 0);
+                return leaderboard;
+            },{});
+        topLeaders = Object.entries(topLeaders);
+        topLeaders.sort(([,v1], [,v2]) => {
+            return v2 - v1;
+        });
+        return topLeaders.slice(0, N || topLeaders.length)
+            .map(([participant, count]) => {
+                const user = userMap[participant];
+                user.observation_count = count;
+                return user;
+            });
     }
+
 };

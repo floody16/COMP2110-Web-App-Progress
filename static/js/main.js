@@ -27,7 +27,7 @@ router.add([
 ]);
 
 router.add([
-    { path: "/observation", handler: Controller.observations_view_handler.bind(Controller) }
+    { path: "/observations", handler: Controller.observations_view_handler.bind(Controller) }
 ]);
 
 router.add([
@@ -61,7 +61,7 @@ function testUpdateObservations() {
 }
 
 // handle the routes
-function route () {
+async function route () {
     const result  = router.recognize(get_path());
 
     if(!result) {
@@ -73,10 +73,9 @@ function route () {
         console.log("handler not defined for route : " + this.location.hash);
         return;
     }
+    await Promise.all([ Model.update_observations(), Model.update_users() ]);
     handler(params);
     // every time a page is rendered call these functions
-    Model.update_observations();
-    Model.update_users();
 }
 
 window.onload = route;

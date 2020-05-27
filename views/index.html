@@ -61,19 +61,91 @@
 
 
   <!-- Templates -->
-  <script id="users-list-template" type="text/x-handlebars-template">
+
+  <script id="main-page-template" type="text/x-handlebars-template">
+    <h2>Main Page</h2>
+    <h3>Recent Observations</h3>
+
+    <table>
+      <tr>
+        <th>Temperature</th>
+        <th>Weather</th>
+        <th>Wind</th>
+        <th>Location</th>
+        <th>Height</th>
+        <th>Leaf Size</th>
+        <th>Leaf Shape</th>
+        <th>Bark Colour</th>
+        <th>Bark Texture</th>
+        <th>View</th>
+      </tr>
+
+      {{#each observations}}
+      <tr>
+        <td>{{temperature}}</td>
+        <td>{{weather}}</td>
+        <td>{{wind}}</td>
+        <td>{{location}}</td>
+        <td>{{height}}</td>
+        <td>{{leaf_size}}</td>
+        <td>{{leaf_shape}}</td>
+        <td>{{bark_colour}}</td>
+        <td>{{bark_texture}}</td>
+        <td><a href='/#!/observations/{{id}}'>View</a></td>
+      </tr>
+      {{/each}}
+
+    </table>
+
     <h2>List of Users</h2>
-    
-    <ul>
-      
-        
-      <li class=user data-id={{id}}>{{first_name}} {{last_name}} {{avatar}}</li>
-      
-      
-    </ul>  
+    <table>
+      <tr>
+       <th>User ID</th>
+       <th>First Name</th>
+       <th>Last Name</th>
+       <th>Avatar</th>
+       <th>Observation Count</th>
+       <th>Actions</th>
+      </tr>
+
+      {{#each leaderboard}}
+      <tr>
+        <td>{{id}}</td>
+        <td>{{first_name}}</td>
+        <td>{{last_name}}</td>
+        <td>{{avatar}}</td>
+        <td>{{observation_count}}</td>
+        <td><a href="/#!/users/{{id}}"></a>View</td>
+      </tr>
+      {{/each}}
+    </table>
+
   </script>
 
-  <script id="observation-detail-template" type="text/x-handlebars-template">
+  <script id="users-list-template" type="text/x-handlebars-template">
+    <h2>List of Users</h2>
+    <table>
+      <tr>
+       <th>User ID</th>
+       <th>First Name</th>
+       <th>Last Name</th>
+       <th>Avatar</th>
+      </tr>
+
+      {{#each users}
+      <tr>
+        <td>{{user.id}}</td>
+        <td>{{user.first_name}}</td>
+        <td>{{user.last_name}}</td>
+        <td>{{user.avatar}}</td>
+        <td><a href="/#!/users/{{user.id}}"></a>User Details</td>
+      </tr>
+      {{/each}}
+    </table>
+
+  </script>
+
+  <script id="observations-list-template" type="text/x-handlebars-template">
     
     <!-- participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
     temperature - a numerical field
@@ -107,13 +179,13 @@
         <td>{{temperature}}</td>
         <td>{{weather}}</td>
         <td>{{wind}}</td>
-        <td>{{location}}</td>
+        <td><a href='/#!/observations/{{id}}'> {{location}} {{weather}}</a></td>
         <td>{{height}}</td>
         <td>{{leaf_size}}</td>
         <td>{{leaf_shape}}</td>
         <td>{{bark_colour}}</td>
         <td>{{bark_texture}}</td>
-        <td><a href='/#!/observations/{{observation.id}}'>Observation Details</a></td>
+        <td><a href='/#!/observations/{{id}}'>Observation Details</a></td>
       </tr>
       {{/each}}
 
@@ -124,26 +196,58 @@
   <script id="user-detail-template" type="text/x-handlebars-template">
 
     <h2>User Details</h2>
+
+    <ul>
+      <li>{{user.id}}</li>
+      <li>{{user.first_name}}</li>
+      <li>{{user.last_name}}</li>
+      <li>{{user.email}}</li>
+      <li>{{user.avatar}}</li>
+    </ul>
+    <!-- participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
+    temperature - a numerical field
+    weather - a select field with options for "fine", "raining", "sunny", "stormy"
+    wind - a select field with options for "none", "light", "medium", "strong"
+    location - a text input
+    height - a floating point number
+    girth - a floating point number
+    leaf_size - a select field with options for "small", "medium", "large"
+    leaf_shape - a select field with options for "rounded", "pointy", "divided"
+    bark_colour - a select field with options for "grey", "red", "silver", "brown"
+    bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty" -->
     <table>
       <tr>
-       <th>User ID</th>
-       <th>First Name</th>
-       <th>Last Name</th>
-       <th>Avatar</th>
+        <th>temperature</th>
+        <th>weather</th>
+        <th>wind</th>
+        <th>location</th>
+        <th>height</th>
+        <th>leaf_size</th>
+        <th>leaf_shape</th>
+        <th>bark_colour</th>
+        <th>bark_texture</th>
+        <th>view</th>
       </tr>
 
-      {{#each users}
+      {{#each observations}}
       <tr>
-        <td>{{user.id}}</td>
-        <td>{{user.first_name}}</td>
-        <td>{{user.last_name}}</td>
-        <td>{{user.avatar}}</td>
-        <td><a href="/#!/observations/{{observation.id}}"></a>User Details</td>
+        <td>{{temperature}}</td>
+        <td>{{weather}}</td>
+        <td>{{wind}}</td>
+        <td>{{location}}</td>
+        <td>{{height}}</td>
+        <td>{{leaf_size}}</td>
+        <td>{{leaf_shape}}</td>
+        <td>{{bark_colour}}</td>
+        <td>{{bark_texture}}</td>
+        <td><a href='/#!/observations/{{observation.id}}'>View</a> </td>
       </tr>
       {{/each}}
+
     </table>
 
   </script>
+
 
   <script id="submit-form-errors-template" type="text/x-handlebars-template">
     <h2>Errors</h2>

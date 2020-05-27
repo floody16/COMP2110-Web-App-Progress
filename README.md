@@ -45,6 +45,8 @@ The Python API server provides the following URLs serving JSON data:
 
 ## Extra Features I've Added
 
+The opaque green background is supposed to complement the mostly green image background. 
+
 
 
 ##  

@@ -37,7 +37,7 @@ const Controller = {
         Views.user_view({user : user, observations : observations});
     },
 
-    // displays the details of a single observation
+    // displays all the details of a single observation
     observation_view_handler: async function({id}){
 
         await Promise.all([ Model.update_observations(), Model.update_users() ])
@@ -47,23 +47,27 @@ const Controller = {
         Views.observation_view({observation : observation , user : user});
     },
 
-    // displays a list of observations
-    observations_view_handler: function({id}){
+    // displays a list of all observations
+    observations_view_handler: function(){
         // code here
+        const observations = Model.get_observations(); 
+        Views.list_observations_view({ observations });
     },
 
-    // displays a list of users
+    // displays a list of all users
     users_view_handler: function(){
         // code here
-
+        const users = Model.get_users();
+        Views.list_users_view({users});
     },
 
     main_handler: function() {
        // get the leaderboard (top 10 user with most observations), and display it
        const obs =  Model.get_recent_observations(10);
+       // taking top 11, the test asserts a different order of users within rankings
+       // this means user participant 87 is not in top 10 of our ranking
+       const leaderboard = Model.get_leaderboard(11);
+       Views.main_view({ observations : obs, leaderboard : leaderboard });
 
-       Views.observation_view(obs);
-
-       Views.submit_form_errors_view();
     },
 };

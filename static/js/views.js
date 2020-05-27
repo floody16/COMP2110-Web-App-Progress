@@ -27,8 +27,11 @@ const Views = {
         target.innerHTML = template(data);
     },
 
-
     // render the html (views) so that you see the appropiate page
+
+    main_view: function (data) {
+        this.apply_template(target, "main-page-template", data);
+    },
 
     submit_view: function (data) {
         this.apply_template(target, "observation-submit-template", data);
@@ -38,23 +41,23 @@ const Views = {
         this.apply_template("messages", "submit-form-errors-template", errors);
     },
 
-    list_users_view: function (users) {
-        this.apply_template(target, "users-list-template", { 'Users': users });
+    list_users_view: function (data) {
+        this.apply_template(target, "users-list-template", data);
     },
 
     user_view: function (user) {
         this.apply_template(target, "user-detail-template", user);
     },
 
-    list_observations_view: function (observations) {
-        this.apply_template(target, "observations-list-template", { 'Observations': observations });
+    list_observations_view: function (data) {
+        this.apply_template(target, "observations-list-template", data);
     },
 
     observation_view: function (observation) {
         this.apply_template(target, "observation-detail-template", observation);
     },
 
-    leaderboard_view: function (user, observation) {
-        this.apply_template(target, "leaderboard-template", user, observation);
+    leaderboard_view: function (data) {
+        this.apply_template(target, "leaderboard-template", data);
     },
 }
