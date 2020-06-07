@@ -43,10 +43,35 @@ The Python API server provides the following URLs serving JSON data:
 * `/api/observations/<id>` - GET returns details of an individual observation
 * `/api/reset` - GET request resets the database (for testing purposes)
 
-## Extra Features I've Added
+## How It Works
 
-The opaque green background is supposed to complement the mostly green image background. 
+The code structure I have provided uses the model, view, and controller/main architecture.
+model.js contains functions that manipulate the data and is independent of the UI. It manages the API.
+main.js is where the program executes, and handles the window object when the page is first
+loaded and when the hash is changed. controller.js receives input from the user and passes 
+it to model.js. It also takes the data from model.js and passes it to views.js to be rendered 
+with a template handler.  
 
+When a user clicks on a link, a new template is inserted into the same page. The route handlers
+do this. I have added a lightweight route recongizer library (in the html) to help render the correct view.
+The main page has a list of the top 10 most recent observations, each with a link to that observation's details.
+It also features a leaderboard of the top 11 users with the most observations, each with a link to that user's
+details. The users page has a list of users with thier corresponding avatars and links to their user detail views.
+The user detail view contains a list of all their observations, with a picture of their avatar and a link
+to the image source. The observations page has a list of all details of all observations; 
+each observation has a link to view the details of that observation in a seperate page.
 
+The submit observation page contains fields and option lists, and a submit button to send the form.
+When a user submits a form without any errors or missing fields, they are redirected to their user details
+page. Their new observation will be visible at the top of the table. Otherwise, if the user enters invalid input 
+a list of error messages will appear, and the user will not be redirected until they enter valid input. 
+
+The opaque green background is supposed to complement the mostly green rainforest background.
+The links transition to brown on mouse hover, to resemble wood. I have attempted to make the text readable,
+although accessibility is not mentioned in the specifications. I have used some of my css code from the Web Design assignment. 
+That code in my Web Design assignment however, is all my own original code. 
+
+I have put TODOs in the comments in index.html (top of templates), and in style.css. They describe what 
+I would have done if I had more time. These improvements could be passed on to a new developer. 
 
 ##  

@@ -10,7 +10,7 @@ export {Model};
 */
 
 // contains the functions to manipulate the data
-// these functions are called by views, main & controller
+// these functions are called by the controller, and are displayed by the views
 const Model = {
 
     observations_url: '/api/observations', 
@@ -23,7 +23,7 @@ const Model = {
     },
 
     // update_users - retrieve the latest list of users 
-    //    from the server API
+    // from the server API
     // when the request is resolved, creates a "modelUpdated" event 
     // with the model as the event detail
     update_users: function() {
@@ -66,11 +66,7 @@ const Model = {
 
     // get_observation - return a single observation given its id
     get_observation: function(observationid) {
-        for (const observation of this.data.observations) {
-            if (observation.id === observationid) {
-                return observation;
-            }
-        }
+        return this.data.observations.find(o => o.id == observationid);
     },
  
     set_observations: function(observations) {
@@ -82,34 +78,50 @@ const Model = {
     //   formdata is a FormData object containing all fields in the observation object
     // when the request is resolved, creates an "observationAdded" event
     //  with the response from the server as the detail
-    add_observation: function(formdata) {
+    add_observation: async function (formdata) {
         const data = new URLSearchParams(formdata);
-        return fetch(this.observations_url, {
+
+        const fetchResult = await fetch(this.observations_url, {
             method: 'POST',
             body: data
-        })
-        .then(response => response.json())
-        .then(result => {
-            let event = new CustomEvent("observationAdded", {
-                detail: result
-            });
-            window.dispatchEvent(event);
-            return result;
-        })      
-        .catch((error) => {
-            console.log(error);
-            throw error;
         });
+        
+        //var r = JSON.parse( fetchResult.body );
+        const jsonResult = await fetchResult.json();
+
+        let event = new CustomEvent("observationAdded", {
+            detail: jsonResult
+        });
+        window.dispatchEvent(event);
+
+        return jsonResult;
+
+        //  fetch(this.observations_url, {
+        //     method: 'POST',
+        //     body: data
+        // })
+        // .then(response => response.json())
+        // .then(result => {
+        //     let event = new CustomEvent("observationAdded", {
+        //         detail: result
+        //     });
+        //     window.dispatchEvent(event);
+        //     return result;
+        // })
+        // .catch((error) => {
+        //     console.log(error);
+        //     throw error;
+        // });
     },
 
     // get_user_observations - return just the observations for
     // one user as an array
-    // this would need to combine the data of both users and observations
+    // this combines the data of both users and observations
     get_user_observations: function(userId) {
         let observations = this.get_observations();
         console.log(observations);
 
-        var userObservations = observations.filter(function(o) { return o.participant === userId; } );     
+        var userObservations = observations.filter(function(o) { return o.participant == userId; } );     
         return this.sort_by_timestamp(userObservations);
     },  
 
@@ -163,6 +175,9 @@ const Model = {
         return null;
     },
 
+
+    // get_leaderboard - get the 10 users with the highest number of submissions,
+    // in descending order 
     get_leaderboard: function(N) {
         const userMap = this.get_users()
         .reduce(function(userMap,user){

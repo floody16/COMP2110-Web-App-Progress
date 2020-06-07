@@ -34,30 +34,12 @@ router.add([
     { path: "/users", handler: Controller.users_view_handler.bind(Controller) }
 ]);
 
-window.addEventListener('hashchange', function(){
-    console.log('The hash has changed');
-});
-
 // retrieves the URL
 function get_path() {
     if (location.hash === "") {
         return location.pathname;
     }
     return location.hash.slice(2);  
-}
-
-function testUpdateObservations() {
-    function handler(e) {
-        let model = e.detail;
-        let observations = model.get_observations();
-        console.log(`observations: ${observations}`);
-        
-        window.removeEventListener("modelUpdated", handler);
-        done();
-    }
-    window.addEventListener('modelUpdated', handler);
-
-    Model.update_observations();
 }
 
 // handle the routes
@@ -68,15 +50,18 @@ async function route () {
         console.log("handler not defined for route : " + this.location.hash);
         return;
     }
-    const {handler, params} = result[0];
+    const {handler, params} = result[ 0];
     if(!handler) {
         console.log("handler not defined for route : " + this.location.hash);
         return;
     }
-    await Promise.all([ Model.update_observations(), Model.update_users() ]);
+    
     handler(params);
-    // every time a page is rendered call these functions
 }
 
-window.onload = route;
-window.onhashchange = route;
+const page_load = () => {
+    Controller.on_page_load().then(route)
+};
+
+window.addEventListener("load", page_load);
+window.addEventListener("hashchange", page_load);

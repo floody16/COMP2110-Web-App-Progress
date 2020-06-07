@@ -9,47 +9,39 @@
 
   <!-- Include Handlebars from a CDN -->
   <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-  <!-- I have included a lightweight route-recognizer to help render the correct view-->
+  <!-- I have included a lightweight route-recognizer to help render the correct view -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/route-recognizer/0.3.4/route-recognizer.js"></script>
-  <script src="/static/js/main.js" type="module"></script>
-  <script src="/static/js/model.js" type="module"></script>
-  <script src="/static/js/views.js" type="module"></script>
-  </script>
-
+  <script src="/static/js/main.js" type=module defer></script>
 </head>
 
 <body>
 
   <header>
-    <div id="logo"></div>
+    <h1>Citizen Science</h1>
+    <h2>Understanding Our Trees</h2>
     <nav>
       <ul>
         <li><a href="#">Home</a></li>
         <li><a href="#!/users">Users</a></li>
         <li><a href="#!/observations">Observations</a></li>
-        <li><a href="#!/submit">Submit an observation</a></li>
+        <li><a href="#!/submit">Submit an Observation</a></li>
       </ul>
     </nav>
   </header>
 
   <div id="content">
-    <div id="heading">
-      <hgroup>
-        <h1>Citizen Science</h1>
-        <h2>Understanding Our Trees</h2>
-      </hgroup>
-      <div id="messages"></div>
-      <div id="target"></div>
+    <div id="target">
     </div>
+    <div id="messages"></div>
   </div>
-  <footer>
-    <div id="social">
-      <ul>
-        <li id="social-twitter"><a href="#">Twitter</a></li>
-        <li id="social-facebook"><a href="#">Facebook</a></li>
-        <li id="social-instagram"><a href="#">Instagram</a></li>
-      </ul>
-    </div>
+  
+  <footer>  
+ 
+    <ul class="social">
+      <li id="social-twitter"><a href="#">Twitter</a></li>
+      <li id="social-facebook"><a href="#">Facebook</a></li>
+      <li id="social-instagram"><a href="#">Instagram</a></li>
+    </ul>
 
     <ul class="footer-tos">
       <li><a href="#">Terms</a></li>
@@ -58,13 +50,20 @@
     </ul>
 
     <p id="copyright">All content and images subject to copyright &copy; COMP2110 Citizen Science 2020.</p>
+  </footer>
+    
+    <!-- Templates -->
+    
+    <!--TODO: Dynamcally load templates. Only load templates for the given route as needed.
+    Split each of these templates into their own html file. Use JavaScript to load the file
+    and register with handlebars.-->
+    
+    <!--TODO: Remove duplication of templates in the html. Eg: Templates of user list and
+    observation list is rendered in 3? templates. Use handlebars partials to create shared templates, https://handlebarsjs.com/guide/#partials-->
 
-
-  <!-- Templates -->
-
-  <script id="main-page-template" type="text/x-handlebars-template">
-    <h2>Main Page</h2>
-    <h3>Recent Observations</h3>
+    <script id="main-page-template" type="text/x-handlebars-template">
+    <h1>Main Page</h1>
+    <h2>Recent Observations</h2>
 
     <table>
       <tr>
@@ -94,71 +93,50 @@
         <td><a href='/#!/observations/{{id}}'>View</a></td>
       </tr>
       {{/each}}
-
     </table>
 
-    <h2>List of Users</h2>
+    <h2>Leaderboard</h2>
     <table>
       <tr>
-       <th>User ID</th>
+      <th>Avatar</th>
        <th>First Name</th>
        <th>Last Name</th>
-       <th>Avatar</th>
        <th>Observation Count</th>
        <th>Actions</th>
       </tr>
 
       {{#each leaderboard}}
       <tr>
-        <td>{{id}}</td>
+        <td><img src="{{avatar}}" alt="Avatar" class="avatar"></td>
         <td>{{first_name}}</td>
         <td>{{last_name}}</td>
-        <td>{{avatar}}</td>
         <td>{{observation_count}}</td>
-        <td><a href="/#!/users/{{id}}"></a>View</td>
+        <td><a href="/#!/users/{{id}}">View</a></td>
       </tr>
       {{/each}}
     </table>
-
   </script>
 
-  <script id="users-list-template" type="text/x-handlebars-template">
+    <script id="users-list-template" type="text/x-handlebars-template">
     <h2>List of Users</h2>
     <table>
       <tr>
-       <th>User ID</th>
-       <th>First Name</th>
-       <th>Last Name</th>
        <th>Avatar</th>
+       <th>Full Name</th>
+       <th>Actions</th>
       </tr>
 
-      {{#each users}
+      {{#each users}}
       <tr>
-        <td>{{user.id}}</td>
-        <td>{{user.first_name}}</td>
-        <td>{{user.last_name}}</td>
-        <td>{{user.avatar}}</td>
-        <td><a href="/#!/users/{{user.id}}"></a>User Details</td>
+        <td><img src="{{avatar}}" alt="Avatar" class="avatar"></td>
+        <td><a href='/#!/users/{{id}}'>{{first_name}} {{last_name}}</a></td>
+        <td><a href='/#!/users/{{id}}'>View</a></td>
       </tr>
       {{/each}}
     </table>
+   </script>
 
-  </script>
-
-  <script id="observations-list-template" type="text/x-handlebars-template">
-    
-    <!-- participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
-    temperature - a numerical field
-    weather - a select field with options for "fine", "raining", "sunny", "stormy"
-    wind - a select field with options for "none", "light", "medium", "strong"
-    location - a text input
-    height - a floating point number
-    girth - a floating point number
-    leaf_size - a select field with options for "small", "medium", "large"
-    leaf_shape - a select field with options for "rounded", "pointy", "divided"
-    bark_colour - a select field with options for "grey", "red", "silver", "brown"
-    bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty" -->
-    
+    <script id="observations-list-template" type="text/x-handlebars-template">
     <h2>List of Observations</h2>
     <table>
       <tr>
@@ -188,33 +166,20 @@
         <td><a href='/#!/observations/{{id}}'>Observation Details</a></td>
       </tr>
       {{/each}}
-
     </table>
 
-  </script>
+    </script>
 
-  <script id="user-detail-template" type="text/x-handlebars-template">
-
+    <script id="user-detail-template" type="text/x-handlebars-template">
     <h2>User Details</h2>
-
     <ul>
-      <li>{{user.id}}</li>
-      <li>{{user.first_name}}</li>
-      <li>{{user.last_name}}</li>
-      <li>{{user.email}}</li>
-      <li>{{user.avatar}}</li>
+      <li><img src="{{user.avatar}}" alt="Avatar" class="avatar"></li>
+      <li>User Id: {{user.id}}</li>
+      <li>Full Name: {{user.first_name}} {{user.last_name}}</li>
+      <li>Email Address: {{user.email}}</li>
+      <li>Avatar: <a href='{{user.avatar}}'>{{user.avatar}}</a></li>
     </ul>
-    <!-- participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
-    temperature - a numerical field
-    weather - a select field with options for "fine", "raining", "sunny", "stormy"
-    wind - a select field with options for "none", "light", "medium", "strong"
-    location - a text input
-    height - a floating point number
-    girth - a floating point number
-    leaf_size - a select field with options for "small", "medium", "large"
-    leaf_shape - a select field with options for "rounded", "pointy", "divided"
-    bark_colour - a select field with options for "grey", "red", "silver", "brown"
-    bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty" -->
+
     <table>
       <tr>
         <th>temperature</th>
@@ -240,121 +205,128 @@
         <td>{{leaf_shape}}</td>
         <td>{{bark_colour}}</td>
         <td>{{bark_texture}}</td>
-        <td><a href='/#!/observations/{{observation.id}}'>View</a> </td>
+        <td><a href='/#!/observations/{{id}}'>View</a> </td>
       </tr>
       {{/each}}
-
     </table>
-
   </script>
 
-
-  <script id="submit-form-errors-template" type="text/x-handlebars-template">
+    <script id="submit-form-errors-template" type="text/x-handlebars-template">
     <h2>Errors</h2>
     <ul>
       {{#each errors}}
-      <li >{{ this }} </li>
+      <li >{{ this }}</li>
       {{/each}}
     </ul>  
   </script>
 
-
-  <script id="observation-detail-template" type="text/x-handlebars-template">
+    <script id="observation-detail-template" type="text/x-handlebars-template">
     <h2>Observation Details</h2>
-
+    
     <ul>
-      <li>{{id}}</li>
-      <li>{{first_name}}</li>
-      <li>{{last_name}}</li>
-      <li>{{email}}</li>
-      <li>{{avatar}}</li>
+      <li><label for="temperature">Temperature: </label>{{temperature}}</li>
+      <li><label for="weather">Weather: </label>{{weather}}</li>
+      <li><label for="wind"> Wind: </label>{{wind}}</li>
+      <li><label for="location">Location: </label>{{location}}</li>
+      <li><label for="height">Height: </label>{{height}}</li>
+      <li><label for="leaf_size">Leaf Size: </label>{{leaf_size}}</li>
+      <li><label for="leaf_shape">Leaf Shape: </label>{{leaf_shape}}</li>
+      <li><label for="bark_colour">Bark Colour: </label>{{bark_colour}}</li>
+      <li><label for="bark_texture">Bark Texture: </label>{{bark_texture}}</li>
     </ul>
   </script>
 
-  <script id="observation-submit-template" type="text/x-handlebars-template">
-    <h2>Observation Submit</h2>
-    <form onsubmit="Controller.handle_submit_form(); return false;" id="submit_form"> <!--currently not working, is called in the test-->
+    <script id="observation-submit-template" type="text/x-handlebars-template">
+    <h2>Submit Observation</h2>
+    <div id="submitObservation">
+    <form onsubmit="Controller.handle_submit_form(); return false;" id="submit_form">
 
-<!--       
-The other fields in the form are as follows:
-participant - participant id, should be a hidden field with the value 0 (since Bob is logged in)
-temperature - a numerical field
-weather - a select field with options for "fine", "raining", "sunny", "stormy"
-wind - a select field with options for "none", "light", "medium", "strong"
-location - a text input
-height - a floating point number
-girth - a floating point number
-leaf_size - a select field with options for "small", "medium", "large"
-leaf_shape - a select field with options for "rounded", "pointy", "divided"
-bark_colour - a select field with options for "grey", "red", "silver", "brown"
-bark_texture - a select field with options for "smooth", "peeling", "crinkles", "furry", "spotty"
-The response from the server to a POST request is either a success or failure. On success you will get a response like: -->
-        
-        <div><input type="hidden" name="participant" value="{{participant}}"/></div>
-        <div><input type="number" name="temperature"/></div>
-        <div><input type="text" name="height"/></div>
-        <div><input type="text" name="girth"/></div>
-        <div><input type="text" name="location"/></div>
-        
+
+      
+    <table> 
+      <div><input type="hidden" name="participant" value="{{participant}}"/></div>
+      <td><div><label for="temperature">Temperature (celcius): </label><input type="number" name="temperature"/></div></td>
+      <td><div><label for="height">Height (metres): </label><input type="text" name="height"/></div></td>
+      <td><div><label for="girth">Girth (metres): </label><input type="text" name="girth"/></div></td>
+      <td><div><label for="location">Location: </label><input type="text" name="location"/></div></td>
+    </table>
+    <table>
+      <td>
         <div>
+        <label for="weather">Weather: </label>
         <select name="weather">
-          <option>
-            fine
-          </option>
-          <option>
-            raining
-          </option>
-          <option>
-            sunny
-          </option>
-          <option>
-            stormy
-          </option>
+          <option>fine</option>
+          <option>raining</option>
+          <option>sunny</option>
+          <option>stormy</option>
         </select>
       </div>
-      <div>
+      </td>
+      <td>
+        <div>
+        <label for="wind">Wind: </label>
         <select name="wind">
-          <option>
-            none
-          </option>
-          <option>
-            light
-          </option>
-          <option>
-            medium
-          </option>
-          <option>
-            strong
-          </option>
-        </select></div>
-        <div><select name="leaf_size">
+          <option>none</option>
+          <option>light</option>
+          <option>medium</option>
+          <option>strong</option>
+        </select>
+      </div>
+      </td>
+      <td>
+        <div>
+          <label for="leaf_size">Leaf Size: </label>
+          <select name="leaf_size">
           <option>small</option>
           <option>medium</option>
           <option>large</option>
-        </select></div>
-        <div><select name="leaf_shape">
+        </select>
+      </div>
+      </td>
+      <td>
+        <div>
+          <label for="leaf_shape">Leaf Shape: </label>
+          <select name="leaf_shape">
           <option>rounded</option>
           <option>pointy</option>
           <option>divided</option>
-        </select></div>
-        <div><select name="bark_colour">
+        </select>
+      </div>
+      </td>
+      <td>
+        <div>
+          <label for="bark_colour">Bark Colour: </label>
+          <select name="bark_colour">
           <option>grey</option>
           <option>red</option>
           <option>silver</option>
           <option>brown</option>
-        </select></div>
-        <div><select name="bark_texture">
+        </select>
+      </div>
+      </td>
+      <td>
+        <div>
+          <label for="bark_texture">Bark Texture: </label>
+          <select name="bark_texture">
           <option>smooth</option>
           <option>peeling</option>
           <option>crinkles</option>
           <option>furry</option>
           <option>spotty</option>
-        </select></div>
+        </select>
+      </div>
+      </td>   
+      </div>
+      <td>
+        <button type="submit" form="submit_form" value="Submit">Submit</button>
+      </td>
+    </table>
+  </script>
 
-
-  <button type="submit" form="submit_form" value="Submit">Submit</button>
-
+    <script id="not-found-template" type="text/x-handlebars-template">
+    <h2>Ooops.. couldn't find what you're looking for?</h2>
   </script>
 
 </body>
+
 </html>
